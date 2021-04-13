@@ -1,46 +1,6 @@
 <div class="jumbotrom bg-white text-center">
   <h1 class="display-4">Corona Covid 19 Tracker</h1>
   <hr />
-</div>
-<div class="row">
-  <div class="card col p-3 m-3">
-    <div class="ui statistic">
-      <div class="value">
-        {{ totalConfirmed }}
-      </div>
-      <div class="label">
-        <h3>Confirmed</h3>
-      </div>
-    </div>
-  </div>
-  <div class="card col p-3 m-3">
-    <div class="ui statistic">
-      <div class="value">
-        {{totalRecovered}}
-      </div>
-      <div class="label">
-        <h3>Recovered</h3>
-      </div>
-    </div>
-  </div>
-  <div class="card col p-3 m-3">
-    <div class="ui statistic">
-      <div class="value">
-        {{totalDeath}}
-      </div>
-      <div class="label">
-        <h3>Deaths</h3>
-      </div>
-    </div>
-  </div>
-  <div class="card col p-3 m-3">
-    <div class="ui statistic">
-      <div class="value">
-        {{totalActive}}
-      </div>
-      <div class="label">
-        <h3>Active</h3>
-      </div>
-    </div>
-  </div>
+
+  <app-dashboard-card [totalConfirmed] = "totalConfirmed" [totalDeath] = "totalDeath" [totalRecovered] = "totalRecovered"  [totalActive] = "totalActive" ></app-dashboard-card>
 </div>
