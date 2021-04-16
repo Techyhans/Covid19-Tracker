@@ -2,6 +2,7 @@ import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GlobalDataSummary } from '../models/global-data';
+import { DateWiseData } from '../models/date-wise-data';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,52 @@ import { GlobalDataSummary } from '../models/global-data';
 export class DataServiceService {
 
   private GlobalDataUrl = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/04-12-2021.csv'
+  private dateWiseDataUrl = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
+  private lastUpdateDate = ""
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient) {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    var t = mm + '/' + dd + '/' + yyyy;
+    this.lastUpdateDate = `${mm}-${parseInt(dd) - 2}-${yyyy}`
+    console.log("LAST UPDATE", this.lastUpdateDate)
+    this.GlobalDataUrl = `https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/${mm}-${parseInt(dd) - 2}-${yyyy}.csv`
+  }
+
+  getDateWiseData(){
+    return this.http.get(this.dateWiseDataUrl, {responseType: "text"}).pipe(
+      map(result => {
+        let rows = result.split("\n")
+        let header = rows[0]
+        let dates = header.split(/,(?=\S)/)
+        let mainData:any = {}
+        dates.splice(0,4)
+        rows.splice(0,1)
+
+        rows.forEach(row => {
+          let cols = row.split(/,(?=\S)/)
+
+          let con:string = cols[1]
+          cols.splice(0,4)
+          mainData[con] = []
+          cols.forEach((value, index) => {
+            let dw:DateWiseData = {
+              country: con,
+              case: +value,
+              date: new Date(Date.parse(dates[index]))
+
+            }
+            mainData[con].push(dw)
+          })
+        })
+
+        return mainData
+      })
+    )
+  }
 
   getGlobalData(){
     return this.http.get(this.GlobalDataUrl, {responseType: "text"}).pipe(

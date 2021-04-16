@@ -1,5 +1,6 @@
+import { DateWiseData } from './../../models/date-wise-data';
 import { DataServiceService } from './../../services/data-service.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { GlobalDataSummary } from 'src/app/models/global-data';
 
 @Component({
@@ -15,10 +16,21 @@ export class CountriesComponent implements OnInit {
   totalRecovered:Number = 0
   totalDeath:Number = 0
   totalActive:Number = 0
+  dateWiseData:any = []
+  selectedCountryData:DateWiseData[] = []
+
+  @Output() changeData:EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private service:DataServiceService) { }
 
   ngOnInit(): void {
+
+    this.service.getDateWiseData().subscribe(
+      (result) => {
+        this.dateWiseData = result
+      }
+    )
+
     this.service.getGlobalData().subscribe(
       result => {
         this.data = result
@@ -30,7 +42,6 @@ export class CountriesComponent implements OnInit {
   }
 
   updateValues(country:string){
-    console.log(country);
     this.data?.forEach(cs => {
       if(cs.country == country){
         this.totalActive = cs.active ?? 0
@@ -39,6 +50,10 @@ export class CountriesComponent implements OnInit {
         this.totalRecovered = cs.recovered ?? 0
       }
     })
+
+    this.selectedCountryData = this.dateWiseData[country]
+
+    this.changeData.emit(this.dateWiseData[country])
   }
 
 }

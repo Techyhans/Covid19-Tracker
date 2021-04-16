@@ -11,4 +11,34 @@
   </div>
   <hr />
   <app-dashboard-card [totalConfirmed] = "totalConfirmed" [totalDeath] = "totalDeath" [totalRecovered] = "totalRecovered"  [totalActive] = "totalActive" ></app-dashboard-card>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        <div style="width: 100%;">
+          <div class="table">
+            <table class="table-responsive">
+              <thead>
+                <tr>
+                  <th>Sno.</th>
+                  <th>Date</th>
+                  <th>Cases</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let cs of selectedCountryData; index as i">
+                  <td>{{i+1}}</td>
+                  <td>{{cs.date | date}}</td>
+                  <td>{{cs.case}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <app-chart [selectedData] = "selectedCountryData"></app-chart>
+    </div>
+  </div>
 </div>
