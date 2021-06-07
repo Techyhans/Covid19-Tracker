@@ -10,50 +10,51 @@ import { GlobalDataSummary } from 'src/app/models/global-data';
 })
 export class CountriesComponent implements OnInit {
 
-  data?:GlobalDataSummary[]
-  countries:string[] = []
-  totalConfirmed:Number = 0
-  totalRecovered:Number = 0
-  totalDeath:Number = 0
-  totalActive:Number = 0
-  dateWiseData:any = []
-  selectedCountryData:DateWiseData[] = []
+  data?: GlobalDataSummary[];
+  countries: string[] = [];
+  totalConfirmed = 0;
+  totalRecovered = 0;
+  totalDeath = 0;
+  totalActive = 0;
+  dateWiseData: any = [];
+  selectedCountryData: DateWiseData[] = [];
 
-  @Output() changeData:EventEmitter<any> = new EventEmitter<any>();
+  @Output() changeData: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private service:DataServiceService) { }
+  constructor(private service: DataServiceService) { }
 
   ngOnInit(): void {
 
     this.service.getDateWiseData().subscribe(
       (result) => {
-        this.dateWiseData = result
+        this.dateWiseData = result;
       }
-    )
+    );
 
     this.service.getGlobalData().subscribe(
       result => {
-        this.data = result
+        this.data = result;
+        this.countries.push("Select Country")
         this.data.forEach(cs => {
-          this.countries.push(cs.country ?? "")
-        })
+          this.countries.push(cs.country ?? '');
+        });
       }
-    )
+    );
   }
 
-  updateValues(country:string){
+  updateValues(country: string){
     this.data?.forEach(cs => {
-      if(cs.country == country){
-        this.totalActive = cs.active ?? 0
-        this.totalConfirmed = cs.confirmed ?? 0
-        this.totalDeath = cs.deaths ?? 0
-        this.totalRecovered = cs.recovered ?? 0
+      if (cs.country === country){
+        this.totalActive = cs.active ?? 0;
+        this.totalConfirmed = cs.confirmed ?? 0;
+        this.totalDeath = cs.deaths ?? 0;
+        this.totalRecovered = cs.recovered ?? 0;
       }
-    })
+    });
 
-    this.selectedCountryData = this.dateWiseData[country]
+    this.selectedCountryData = this.dateWiseData[country];
 
-    this.changeData.emit(this.dateWiseData[country])
+    this.changeData.emit(this.dateWiseData[country]);
   }
 
 }

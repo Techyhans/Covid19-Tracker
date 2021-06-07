@@ -10,68 +10,68 @@ import { GoogleChartInterface } from 'ng2-google-charts';
 })
 export class HomeComponent implements OnInit {
 
-  lastUpdateDate = ""
-  totalConfirmed = 0
-  totalRecovered = 0
-  totalDeath = 0
-  totalActive = 0
-  mainData:any = []
-  datatable:any = []
-  globalData?:GlobalDataSummary[];
-  pieChart:GoogleChartInterface={
-    chartType: "PieChart"
-  }
-  columnChart:GoogleChartInterface={
-    chartType: "ColumnChart"
-  }
+  lastUpdateDate = '';
+  totalConfirmed = 0;
+  totalRecovered = 0;
+  totalDeath = 0;
+  totalActive = 0;
+  mainData: any = [];
+  datatable: any = [];
+  globalData?: GlobalDataSummary[];
+  pieChart: GoogleChartInterface = {
+    chartType: 'PieChart'
+  };
+  columnChart: GoogleChartInterface = {
+    chartType: 'ColumnChart'
+  };
 
-  constructor(private dataService:DataServiceService) {
+  constructor(private dataService: DataServiceService) {
     // Get Last Update Date
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    let yyyy = today.getFullYear();
 
-    var t = mm + '/' + dd + '/' + yyyy;
-    this.lastUpdateDate = `${mm}-${parseInt(dd) - 2}-${yyyy}`
-    console.log("LAST UPDATE", this.lastUpdateDate)
+    let t = mm + '/' + dd + '/' + yyyy;
+    this.lastUpdateDate = `${mm}-${parseInt(dd) - 2}-${yyyy}`;
+    console.log('LAST UPDATE', this.lastUpdateDate);
    }
 
-  initChart(caseType:string){
-    this.datatable = []
-    this.mainData = []
-    let value:Number
-    this.datatable.push(["Country", "Cases"])
+  initChart(caseType: string){
+    this.datatable = [];
+    this.mainData = [];
+    let value: Number;
+    this.datatable.push(['Country', 'Cases']);
     this.globalData?.forEach(cs => {
-      if(caseType == "a"){
-        if(cs.active ?? 0 > 0){
-          value = cs.active ?? 0
+      if (caseType == 'a'){
+        if (cs.active ?? 0 > 0){
+          value = cs.active ?? 0;
         }
       }
-      if(caseType == "c"){
-        if(cs.confirmed ?? 0 > 0){
-          value = cs.confirmed ?? 0
+      if (caseType == 'c'){
+        if (cs.confirmed ?? 0 > 0){
+          value = cs.confirmed ?? 0;
         }
       }
-      if(caseType == "d"){
-        if(cs.deaths ?? 0 > 0){
-          value = cs.deaths ?? 0
+      if (caseType == 'd'){
+        if (cs.deaths ?? 0 > 0){
+          value = cs.deaths ?? 0;
         }
       }
-      if(caseType == "r"){
-        if(cs.recovered ?? 0 > 0){
-          value = cs.recovered ?? 0
+      if (caseType == 'r'){
+        if (cs.recovered ?? 0 > 0){
+          value = cs.recovered ?? 0;
         }
       }
 
-      this.datatable.push({"Country": cs.country, "Value": value})
-      this.mainData.push({"Country": cs.country, "Value": value})
-    })
+      this.datatable.push({Country: cs.country, Value: value});
+      this.mainData.push({Country: cs.country, Value: value});
+    });
 
     this.pieChart = {
       chartType: 'PieChart',
       dataTable: this.datatable,
-      //firstRowIsData: true,
+      // firstRowIsData: true,
       options: {
         height: 500
       },
@@ -80,19 +80,19 @@ export class HomeComponent implements OnInit {
     this.columnChart = {
       chartType: 'ColumnChart',
       dataTable: this.datatable,
-      //firstRowIsData: true,
+      // firstRowIsData: true,
       options: {
         height: 500
       },
     };
 
-    this.pieChart.component?.draw()
-    this.columnChart.component?.draw()
+    this.pieChart.component?.draw();
+    this.columnChart.component?.draw();
   }
 
-  updateValue(caseType:HTMLInputElement){
-    console.log(caseType.value)
-    this.initChart(caseType.value)
+  updateValue(caseType: HTMLInputElement){
+    console.log(caseType.value);
+    this.initChart(caseType.value);
 
   }
 
@@ -100,34 +100,34 @@ export class HomeComponent implements OnInit {
     this.dataService.getGlobalData().subscribe(
       {
         next: (result) => {
-          console.log(result)
-          this.globalData = result
+          console.log(result);
+          this.globalData = result;
           result.forEach(cs => {
-            if(!Number.isNaN(cs.confirmed)){
-              this.totalConfirmed += cs.confirmed ?? 0
+            if (!Number.isNaN(cs.confirmed)){
+              this.totalConfirmed += cs.confirmed ?? 0;
             }
 
-            if(!Number.isNaN(cs.recovered)){
-              this.totalRecovered += cs.recovered ?? 0
+            if (!Number.isNaN(cs.recovered)){
+              this.totalRecovered += cs.recovered ?? 0;
             }
 
-            if(!Number.isNaN(cs.deaths)){
-              this.totalDeath += cs.deaths ?? 0
+            if (!Number.isNaN(cs.deaths)){
+              this.totalDeath += cs.deaths ?? 0;
             }
 
-            if(!Number.isNaN(cs.active)){
-              this.totalActive += cs.active ?? 0
+            if (!Number.isNaN(cs.active)){
+              this.totalActive += cs.active ?? 0;
             }
 
-          })
+          });
 
-          this.initChart("c")
+          this.initChart('c');
 
-          console.log("RECOVERED", this.totalRecovered);
+          console.log('RECOVERED', this.totalRecovered);
 
         }
       }
-    )
+    );
   }
 
 }

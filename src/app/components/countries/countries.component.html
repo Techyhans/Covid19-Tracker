@@ -1,5 +1,5 @@
 <div class="jumbotrom bg-white text-center">
-  <h1 class="display-4">Corona Covid 19 Tracker Country Wise</h1>
+  <h1 class="display-5">Corona Covid 19 Tracker Country Wise</h1>
   <hr />
   <div class="mx-auto">
     <div class="form-group col-lg-5 mx-auto">
@@ -13,11 +13,14 @@
   <app-dashboard-card [totalConfirmed] = "totalConfirmed" [totalDeath] = "totalDeath" [totalRecovered] = "totalRecovered"  [totalActive] = "totalActive" ></app-dashboard-card>
 
   <div class="row">
-    <div class="col-6">
+    <div class="col-md-6 col-sm-12">
+      <app-chart [selectedData] = "selectedCountryData"></app-chart>
+    </div>
+    <div class="col-md-6 col-sm-12">
       <div class="card">
         <div style="width: 100%;">
           <div class="table">
-            <table class="table-responsive">
+            <table class="table table-responsive" style="width: 100%;">
               <thead>
                 <tr>
                   <th>Sno.</th>
@@ -36,9 +39,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-6">
-      <app-chart [selectedData] = "selectedCountryData"></app-chart>
     </div>
   </div>
 </div>

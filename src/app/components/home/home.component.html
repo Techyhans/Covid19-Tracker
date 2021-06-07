@@ -1,5 +1,5 @@
 <div class="jumbotrom bg-white text-center">
-  <h1 class="display-4">Corona Covid 19 Tracker</h1>
+  <h1 class="display-5">Corona Covid 19 Tracker</h1>
   <hr />
   <app-dashboard-card [totalConfirmed] = "totalConfirmed" [totalDeath] = "totalDeath" [totalRecovered] = "totalRecovered"  [totalActive] = "totalActive" ></app-dashboard-card>
   <hr />
@@ -7,7 +7,6 @@
 </div>
 <div class="ui form">
   <div class="inline fields">
-    <label for="fruit">Select Case Type:</label>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="caseType" id="c" value="c" #c (click)="updateValue(c)" checked="" tabindex="0" class="hidden">
@@ -35,16 +34,7 @@
   </div>
 </div>
 
-<app-bar-chart [selectedData] = "datatable"></app-bar-chart>
-
-<!-- <div class="row">
-  <div class="col-6">
-    <google-chart [data]="columnChart"></google-chart>
-  </div>
-  <div class="col-6">
-    <google-chart [data]="pieChart"></google-chart>
-  </div>
-</div> -->
+<!--<app-bar-chart [selectedData] = "datatable"></app-bar-chart>-->
 
 <table class="table">
   <tr>
